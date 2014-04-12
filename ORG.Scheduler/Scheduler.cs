@@ -138,7 +138,7 @@ namespace ObjectivelyRadical.Scheduler
 				}
 			}
 
-			// Update all running scripts
+			// Update all -currently- running scripts
 			foreach (ScriptWrapper s in Scripts.FindAll(x => x.State == ScriptState.Running))
 			{
 				s.Update ((float)deltaTime, this);
@@ -161,6 +161,10 @@ namespace ObjectivelyRadical.Scheduler
 					WaitingForTime.Remove(s);
 
 				s.SetState (ScriptState.Running);
+
+				// Be polite and let them update this cycle
+				s.Update((float)deltaTime, this);
+
 			}
 
 			// Clear all signals
