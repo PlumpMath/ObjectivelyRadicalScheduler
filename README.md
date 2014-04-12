@@ -1,12 +1,7 @@
 ObjectivelyRadicalScheduler
 ===========================
 
-A simple C# scheduler designed for implementing simple coroutines in applications and games.  Features include:
+A simple C# scheduler designed for implementing simple coroutines in applications and games.  Multiple simultaneous coroutines that can take multiple arguments are supported.  Scripts can be paused for set intervals of time or can wait for a specific signal sent through the scheduler.  Optionally, running scripts can be assigned tags, and the scheduler can pause, resume and abort coroutines by tag as well.
 
--Multiple simultaneous coroutines
--Coroutines that can take multiple arguments
--Scripts can pause for set intervals of time or can wait for a specific signal sent through the scheduler
--Scripts can optionally be assigned tags
--Pausing and resuming by tags is now supported
 
 Please see ORG.Scheduler/Example.cs for usage examples.
