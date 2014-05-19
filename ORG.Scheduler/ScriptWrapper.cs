@@ -44,7 +44,7 @@ namespace ObjectivelyRadical.Scheduler
 		{
 			ScriptWrapper newWrapper = new ScriptWrapper();
 			newWrapper.thisScript = script(arg);
-			InitializeWrapper(newWrapper);
+			InitializeWrapper(newWrapper, tags);
 
 			return newWrapper;
 		}
@@ -53,7 +53,7 @@ namespace ObjectivelyRadical.Scheduler
 		{
 			ScriptWrapper newWrapper = new ScriptWrapper();
 			newWrapper.thisScript = script(arg1, arg2);
-			InitializeWrapper(newWrapper);
+			InitializeWrapper(newWrapper, tags);
 			
 			return newWrapper;
 		}
@@ -62,7 +62,7 @@ namespace ObjectivelyRadical.Scheduler
 		{
 			ScriptWrapper newWrapper = new ScriptWrapper();
 			newWrapper.thisScript = script(arg1, arg2, arg3);
-			InitializeWrapper(newWrapper);
+			InitializeWrapper(newWrapper, tags);
 
 			return newWrapper;
 		}
@@ -71,7 +71,7 @@ namespace ObjectivelyRadical.Scheduler
 		{
 			ScriptWrapper newWrapper = new ScriptWrapper();
 			newWrapper.thisScript = script(arg1, arg2, arg3, arg4);
-			InitializeWrapper(newWrapper);
+			InitializeWrapper(newWrapper, tags);
 			
 			return newWrapper;
 		}
