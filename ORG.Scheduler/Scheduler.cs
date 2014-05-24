@@ -154,6 +154,11 @@ namespace ObjectivelyRadical.Scheduler
 			// Awaken all scripts at once
 			foreach (ScriptWrapper s in reawakeningScripts)
 			{
+				// Because it's possible for scripts to cancel other scripts, we need to make sure
+				// that this script has not yet completed before running it
+				if(s.State == ScriptState.Completed)
+					continue;
+
 				if(WaitingForSignal.ContainsKey(s))
 					WaitingForSignal.Remove(s);
 
@@ -198,6 +203,18 @@ namespace ObjectivelyRadical.Scheduler
 			WaitingForSignal.Clear();
 			WaitingForTime.Clear();
 			SentSignals.Clear();
+		}
+
+		// Returns a list of all coroutines (for debugging purposes only)
+		public List<ScriptWrapper> GetAllCoroutines ()
+		{
+			return Scripts;
+		}
+
+		// Returns a list of all coroutines with the given tag(for debugging purposes only)
+		public List<ScriptWrapper> GetCoroutinesByTag (string tag)
+		{
+			return Scripts.FindAll(x => x.Tags.Contains(tag));
 		}
 
 
