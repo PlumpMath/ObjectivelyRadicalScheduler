@@ -124,9 +124,26 @@ namespace ObjectivelyRadical.Scheduler
 			// First, update the current time
 			currentTime += deltaTime;
 
+			// Clear sent signals
+			SentSignals.Clear();
+
 			// Remove all completed scripts from the list
 			Scripts.RemoveAll (x => x.State == ScriptState.Completed);
 
+
+
+			// Update all -currently- running scripts
+			foreach (ScriptWrapper s in Scripts.FindAll(x => x.State == ScriptState.Running))
+			{
+				s.Update ((float)deltaTime, this);
+			}
+
+			ReawakenTimeScripts(deltaTime);
+			ReawakenSignalScripts(deltaTime);
+		}
+
+		private void ReawakenTimeScripts (double deltaTime)
+		{
 			List<ScriptWrapper> reawakeningScripts = new List<ScriptWrapper> ();
 
 			// Add all scripts awakened by time to the reawakening list
@@ -138,12 +155,31 @@ namespace ObjectivelyRadical.Scheduler
 				}
 			}
 
-			// Update all -currently- running scripts
-			foreach (ScriptWrapper s in Scripts.FindAll(x => x.State == ScriptState.Running))
+			// Awaken the time scripts
+			foreach (ScriptWrapper s in reawakeningScripts)
 			{
-				s.Update ((float)deltaTime, this);
+				// Because it's possible for scripts to cancel other scripts, we need to make sure
+				// that this script has not yet completed before running it
+				if(s.State == ScriptState.Completed)
+					continue;
+				
+				s.SetState(ScriptState.Running);
+
+				// Verify that we haven't grabbed an invalid script
+				if(WaitingForTime.ContainsKey(s))
+				{
+					WaitingForTime.Remove(s);
+					
+					// Be polite and let time sensitive scripts update this cycle
+					s.Update((float)deltaTime, this);
+				}
 			}
-			
+		}
+
+		private void ReawakenSignalScripts (double deltaTime)
+		{
+			List<ScriptWrapper> reawakeningScripts = new List<ScriptWrapper> ();
+
 			// Add all signaled scripts to the reawakening list
 			foreach (KeyValuePair<ScriptWrapper, string> s in WaitingForSignal)
 			{
@@ -151,29 +187,23 @@ namespace ObjectivelyRadical.Scheduler
 					reawakeningScripts.Add (s.Key);
 			}
 
-			// Awaken all scripts at once
+			// Awaken the signal scripts
 			foreach (ScriptWrapper s in reawakeningScripts)
 			{
 				// Because it's possible for scripts to cancel other scripts, we need to make sure
 				// that this script has not yet completed before running it
 				if(s.State == ScriptState.Completed)
 					continue;
-
+				
+				s.SetState(ScriptState.Running);
+				
 				if(WaitingForSignal.ContainsKey(s))
+				{
 					WaitingForSignal.Remove(s);
-
-				if(WaitingForTime.ContainsKey(s))
-					WaitingForTime.Remove(s);
-
-				s.SetState (ScriptState.Running);
-
-				// Be polite and let them update this cycle
-				s.Update((float)deltaTime, this);
-
+					
+					// Don't let signalled script resume now, just in case they send their own signals
+				}
 			}
-
-			// Clear all signals
-			SentSignals.Clear();
 		}
 
 
