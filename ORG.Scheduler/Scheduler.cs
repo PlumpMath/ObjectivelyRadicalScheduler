@@ -313,6 +313,36 @@ namespace ObjectivelyRadical.Scheduler
 				WaitingForTime.Remove(s);
 			}
 		}
+
+		// Aborts all coroutines that do not have the given tag assigned to them
+		public void AbortCoroutinesWithoutTag(string tag)
+		{
+			// Avoid modifying the collection by setting each script to Completed
+			foreach (ScriptWrapper s in Scripts.FindAll(x => !x.Tags.Contains(tag)))
+			{
+				s.SetState (ScriptState.Completed);
+			}
+
+			// Create a list to store references to canceled coroutines
+			List<ScriptWrapper> aborted = new List<ScriptWrapper> ();
+			foreach (KeyValuePair<ScriptWrapper, string> s in WaitingForSignal)
+			{
+				if (!s.Key.Tags.Contains (tag))
+					aborted.Add (s.Key);
+			}
+			
+			foreach (KeyValuePair<ScriptWrapper, float> s in WaitingForTime)
+			{
+				if (!s.Key.Tags.Contains (tag))
+					aborted.Add (s.Key);
+			}
+			
+			foreach (ScriptWrapper s in aborted)
+			{
+				WaitingForSignal.Remove(s);
+				WaitingForTime.Remove(s);
+			}
+		}
 	}
 }
 
