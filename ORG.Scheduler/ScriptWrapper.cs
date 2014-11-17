@@ -76,6 +76,39 @@ namespace ObjectivelyRadical.Scheduler
 			return newWrapper;
 		}
 
+		public static ScriptWrapper CreateScriptWrapperWithArgs<T, U, V, W, X> 
+			(ScriptWithArgs<T, U, V, W, X> script, T arg1, U arg2, V arg3, W arg4, X arg5, 
+			 params string[] tags)
+		{
+			ScriptWrapper newWrapper = new ScriptWrapper();
+			newWrapper.thisScript = script(arg1, arg2, arg3, arg4, arg5);
+			InitializeWrapper(newWrapper, tags);
+			
+			return newWrapper;
+		}
+
+		public static ScriptWrapper CreateScriptWrapperWithArgs<T, U, V, W, X, Y> 
+			(ScriptWithArgs<T, U, V, W, X, Y> script, T arg1, U arg2, V arg3, W arg4, X arg5, 
+			 Y arg6, params string[] tags)
+		{
+			ScriptWrapper newWrapper = new ScriptWrapper();
+			newWrapper.thisScript = script(arg1, arg2, arg3, arg4, arg5, arg6);
+			InitializeWrapper(newWrapper, tags);
+
+			return newWrapper;
+		}
+
+		public static ScriptWrapper CreateScriptWrapperWithArgs<T, U, V, W, X, Y, Z> 
+			(ScriptWithArgs<T, U, V, W, X, Y, Z> script, T arg1, U arg2, V arg3, W arg4, X arg5, 
+			 Y arg6, Z arg7, params string[] tags)
+		{
+			ScriptWrapper newWrapper = new ScriptWrapper();
+			newWrapper.thisScript = script(arg1, arg2, arg3, arg4, arg5, arg6, arg7);
+			InitializeWrapper(newWrapper, tags);
+			
+			return newWrapper;
+		}
+
 
 		private static void InitializeWrapper (ScriptWrapper newWrapper, params string[] tags)
 		{

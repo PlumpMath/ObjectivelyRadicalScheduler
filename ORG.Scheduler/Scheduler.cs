@@ -8,6 +8,11 @@ namespace ObjectivelyRadical.Scheduler
 	public delegate IEnumerator<ScriptPauser> ScriptWithArgs<T,U>(T arg1, U arg2);
 	public delegate IEnumerator<ScriptPauser> ScriptWithArgs<T,U,V>(T arg1, U arg2, V arg3);
 	public delegate IEnumerator<ScriptPauser> ScriptWithArgs<T,U,V,W>(T arg1, U arg2, V arg3, W arg4);
+	public delegate IEnumerator<ScriptPauser> ScriptWithArgs<T,U,V,W,X>(T arg1, U arg2, V arg3, W arg4, X arg5);
+	public delegate IEnumerator<ScriptPauser> ScriptWithArgs<T,U,V,W,X,Y>(T arg1, U arg2, V arg3, W arg4, X arg5,
+	                                                                      Y arg6);
+	public delegate IEnumerator<ScriptPauser> ScriptWithArgs<T,U,V,W,X,Y,Z>(T arg1, U arg2, V arg3, W arg4, X arg5,
+	                                                                      Y arg6, Z arg7);
 
 	public class Scheduler
 	{
@@ -116,6 +121,24 @@ namespace ObjectivelyRadical.Scheduler
 		public void ExecuteWithArgs<T, U, V, W>(ScriptWithArgs<T, U, V, W> script, T arg1, U arg2, V arg3, W arg4, params string[] tags)
 		{
 			Scripts.Add(ScriptWrapper.CreateScriptWrapperWithArgs(script, arg1, arg2, arg3, arg4, tags));
+		}
+
+		public void ExecuteWithArgs<T, U, V, W, X>(ScriptWithArgs<T, U, V, W, X> script, 
+		                                           T arg1, U arg2, V arg3, W arg4, X arg5, params string[] tags)
+		{
+			Scripts.Add(ScriptWrapper.CreateScriptWrapperWithArgs(script, arg1, arg2, arg3, arg4, arg5, tags));
+		}
+
+		public void ExecuteWithArgs<T, U, V, W, X, Y>(ScriptWithArgs<T, U, V, W, X, Y> script, 
+		                                           T arg1, U arg2, V arg3, W arg4, X arg5, Y arg6, params string[] tags)
+		{
+			Scripts.Add(ScriptWrapper.CreateScriptWrapperWithArgs(script, arg1, arg2, arg3, arg4, arg5, arg6, tags));
+		}
+
+		public void ExecuteWithArgs<T, U, V, W, X, Y, Z>(ScriptWithArgs<T, U, V, W, X, Y, Z> script, 
+		                                              T arg1, U arg2, V arg3, W arg4, X arg5, Y arg6, Z arg7, params string[] tags)
+		{
+			Scripts.Add(ScriptWrapper.CreateScriptWrapperWithArgs(script, arg1, arg2, arg3, arg4, arg5, arg6, arg7, tags));
 		}
 		#endregion
 
